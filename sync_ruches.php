@@ -14,15 +14,15 @@ try {
 
     $coderuche  = $_POST['coderuche'] ?? '';
     $nomcomplet = $_POST['nomcomplet'] ?? '';
-    $status     = $_POST['status'] ?? 'ACTIVE';
+    $status     = $_POST['status'] ?? '';
     $n_agent    = $_POST['n_agent'] ?? '';
 
     if (!empty($coderuche) && !empty($n_agent)) {
         // 1. Insertion/Mise à jour dans le référentiel GLOBAL 'ruches'
         // On met à jour le nom si la ruche existe déjà
-        $sqlR = "INSERT INTO ruches (coderuche, nomcomplet, status) 
-                 VALUES (:code, :nom, :status) 
-                 ON DUPLICATE KEY UPDATE nomcomplet = :nom";
+        $sqlR = "INSERT IGNORE INTO ruches (coderuche, nomcomplet, status) 
+                 VALUES (:code, :nom, :status)";
+                 //ON DUPLICATE KEY UPDATE nomcomplet = :nom";
         $stmtR = $pdo->prepare($sqlR);
         $stmtR->execute([
             'code'   => $coderuche,
@@ -32,11 +32,13 @@ try {
 
         // 2. Insertion dans la table de LIAISON 'agent_ruches'
         // On utilise INSERT IGNORE pour ne pas créer de doublon si le lien existe déjà
-        $sqlL = "INSERT IGNORE INTO agent_ruches (n_agent, coderuche) VALUES (:agent, :code)";
+        $sqlL = "INSERT INTO agent_ruches (n_agent, coderuche, status) VALUES (:agent, :code, :status) ON DUPLICATE KEY UPDATE status = :status";
+
         $stmtL = $pdo->prepare($sqlL);
         $stmtL->execute([
             'agent' => $n_agent,
-            'code'  => $coderuche
+            'code'  => $coderuche,
+            'status' => $status
         ]);
 
         echo json_encode(["status" => "success", "message" => "Ruche synchronisée et liée à l'agent"]);
