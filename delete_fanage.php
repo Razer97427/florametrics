@@ -8,9 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $code_retour = $_POST['code_retour'] ?? '';
 
     if (!empty($id)) {
-        $stmt = $conn->prepare("DELETE FROM fanages WHERE id_l = ?");
+        // $stmt = $conn->prepare("DELETE FROM fanages WHERE id_l = ?");
+        // $stmt->bind_param("i", $id);
+        // $stmt->execute();
+
+        $stmt = $conn->prepare("UPDATE fanages set status = 'N' WHERE id_l = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
+
+
     }
 
     if (!empty($code_retour)) {

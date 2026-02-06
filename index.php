@@ -162,7 +162,7 @@ include 'include/header.php';
                             <td>
                                 <div class="btn-group">
                                     <a href="fanages.php?code=<?= urlencode($r['coderuche']) ?>" class="btn-sm btn-view">👁️</a>
-                                    <a href="edit_ruche.php?code=<?= urlencode($r['coderuche']) ?>" class="btn-sm btn-edit">✏️</a>
+                                    <!-- <a href="edit_ruche.php?code=<?= urlencode($r['coderuche']) ?>" class="btn-sm btn-edit">✏️</a> -->
                                     <a href="delete_ruches.php?code=<?= urlencode($r['coderuche']) ?>&admin=1" class="btn-sm btn-del" onclick="return confirm('Supprimer définitivement ?')">🗑️</a>
                                 </div>
                             </td>

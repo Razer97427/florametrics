@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action_add'])) {
     $marquees = (int)$_POST['f_marquees'];
     $date = $_POST['d_fanage'];
     $agent = $_SESSION['agent'];
-    $status = "WEB_MANUAL";
+    $status = "A";
 
     $ins = $conn->prepare("INSERT INTO fanages (login, coderuche, f_fannes, f_marquees, d_fanage, status) VALUES (?, ?, ?, ?, ?, ?)");
     $ins->bind_param("ssiiss", $agent, $code, $fannes, $marquees, $date, $status);
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action_add'])) {
 }
 
 // 3. Récupération de l'historique
-$stmt_hist = $conn->prepare("SELECT * FROM fanages WHERE coderuche = ? ORDER BY d_fanage DESC");
+$stmt_hist = $conn->prepare("SELECT * FROM fanages WHERE coderuche = ? AND status = 'A' ORDER BY d_fanage DESC");
 $stmt_hist->bind_param("s", $code);
 $stmt_hist->execute();
 $historique = $stmt_hist->get_result();

@@ -345,6 +345,78 @@ footer {
     box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
 }
 
+
+
+
+/* --- Page de Téléchargement --- */
+.download-page {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.download-header {
+    margin-bottom: 30px;
+}
+
+.download-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.os-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.btn-large {
+    display: block;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    padding: 15px;
+}
+
+.instructions {
+    text-align: left;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid var(--primary);
+}
+
+.instructions h3 {
+    margin-top: 0;
+    color: var(--primary);
+}
+
+.instructions ol {
+    padding-left: 20px;
+}
+
+.instructions li {
+    margin-bottom: 10px;
+}
+
+.alert-info {
+    margin-top: 20px;
+    padding: 10px;
+    background: #e1f5fe;
+    color: #01579b;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* --- Navigation --- */
+.nav-download {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 /* =========================================
    7. ADAPTATIONS DESKTOP (ECRANS > 768px)
    ========================================= */

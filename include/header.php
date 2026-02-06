@@ -16,6 +16,7 @@
     <nav>
         <?php if(isset($_SESSION['agent'])): ?>
             <a href="index.php">Mes Ruches</a>
+            <a href="download.php" class="nav-admin">Télécharger mon application</a>
             <?php if(isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
                 <a href="manage_users.php" class="nav-admin">Gérer les utilisateurs</a>
             <?php endif; ?>
