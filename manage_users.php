@@ -23,7 +23,8 @@ if (isset($_GET['delete_login'])) {
     if ($login_to_delete === $_SESSION['agent']) {
         $error = "Sécurité : Vous ne pouvez pas supprimer votre propre compte admin.";
     } else {
-        $del = $conn->prepare("DELETE FROM florametrics WHERE login = ?");
+        // $del = $conn->prepare("DELETE FROM florametrics WHERE login = ?");
+        $del = $conn->prepare("UPDATE florametrics set status = 'N' WHERE login = ?");
         $del->bind_param("s", $login_to_delete);
         if ($del->execute()) {
             $message = "Utilisateur supprimé avec succès.";
@@ -86,6 +87,7 @@ include 'include/header.php';
         <thead>
             <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
                 <th style="padding: 12px; text-align: left;">LOGIN</th>
+                <th style="padding: 12px; text-align: left;">STATUS</th>
                 <th style="padding: 12px; text-align: left;">NOM</th>
                 <th style="padding: 12px; text-align: left;">RÔLE</th>
                 <th style="padding: 12px; text-align: left;">DERNIÈRE CONNEXION</th>
@@ -96,6 +98,7 @@ include 'include/header.php';
             <?php while($row = $result->fetch_assoc()): ?>
             <tr style="border-bottom: 1px solid #eee;">
                 <td style="padding: 12px;"><strong><?= htmlspecialchars($row['login'] ?? '') ?></strong></td>
+                <td style="padding: 12px;"><strong><?= htmlspecialchars($row['status'] ?? '') ?></strong></td>
                 <td style="padding: 12px;"><?= htmlspecialchars($row['nomcomplet'] ?? 'N/A') ?></td>
                 <td style="padding: 12px;">
                     <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8em; background: <?= ($row['role'] == 'Admin') ? '#ffcccc' : '#e2f0ff' ?>;">
