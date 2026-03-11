@@ -1,0 +1,15 @@
+# Ignorer le dossier de sauvegarde
+SAUV/
+
+# Ignorer le fichier de configuration spécifique
+config.php
+
+# Ignorer tous les fichiers commençant par sync_
+sync_*
+
+# Bonus : Ignorer l'APK (souvent trop lourd pour GitHub)
+Florametrics.apk
+*.ini
+*.txt
+*.ok
+*.back
