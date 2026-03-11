@@ -1,0 +1,34 @@
+<?php
+session_start();
+if (!isset($_SESSION['agent'])) { header("Location: login.php"); exit; }
+require '../config.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'] ?? '';
+    $code_retour = $_POST['code_retour'] ?? '';
+
+    if (!empty($id)) {
+        // $stmt = $conn->prepare("DELETE FROM fanages WHERE id_l = ?");
+        // $stmt->bind_param("i", $id);
+        // $stmt->execute();
+
+        $stmt = $conn->prepare("UPDATE ent_fanages set status = 'N' WHERE id_l = ? AND coderuche = ?");
+        $stmt->bind_param("is", $id,$code_retour);
+        $stmt->execute();
+
+        $stmt2 = $conn->prepare("UPDATE det_fanages set status = 'N' WHERE id_l = ? AND coderuche = ?");
+        $stmt2->bind_param("is", $id,$code_retour);
+        $stmt2->execute();
+
+
+    }
+
+    if (!empty($code_retour)) {
+        header("Location: fanages.php?code=" . urlencode($code_retour));
+    } else {
+        header("Location: index.php");
+    }
+    exit;
+} else {
+    die("Action non autorisée.");
+}
