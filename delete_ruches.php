@@ -9,8 +9,9 @@ if (!isset($_SESSION['agent'])) {
 
 require '../config.php';
 
-$code = $_GET['code'] ?? '';
+// $code = $_GET['code'] ?? '';
 $agent = $_SESSION['agent'];
+$code = $_POST['code'] ?? '';
 $isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin');
 
 // if (!empty($code)) {

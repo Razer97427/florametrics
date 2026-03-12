@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['agent'] = $user['login'];
             $_SESSION['role']  = $user['role'];
             $_SESSION['nom']   = $user['nomcomplet'];
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             header("Location: index.php");
             exit();
         } else {

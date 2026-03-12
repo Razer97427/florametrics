@@ -51,7 +51,11 @@ include 'include/header.php';
                 <div>
                     <a href="fanages.php?code=<?= urlencode($r['coderuche']) ?>" class="btn btn-primary">Gérer</a>
                     <!-- On retire uniquement le lien, on ne supprime pas la ruche globale -->
-                    <a href="delete_ruche.php?code=<?= urlencode($r['coderuche']) ?>" class="btn btn-danger btn-small" onclick="return confirm('Retirer cette ruche de votre liste ?')">Retirer</a>
+                    <!-- <a href="delete_ruche.php?code=<?= urlencode($r['coderuche']) ?>" class="btn btn-danger btn-small" onclick="return confirm('Retirer cette ruche de votre liste ?')">Retirer</a> -->
+                     <form method="POST" action="delete_ruches.php" style="display: inline-block;" onsubmit="return confirm('Retirer cette ruche de votre liste ?')">
+                        <input type="hidden" name="code" value="<?= htmlspecialchars($r['coderuche']) ?>">
+                        <button type="submit" class="btn btn-danger btn-small">Retirer</button>
+                    </form>
                 </div>
             </div>
         <?php endwhile; ?>

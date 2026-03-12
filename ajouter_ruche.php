@@ -1,7 +1,7 @@
 <?php
 // Activation du debug pour voir l'erreur exacte
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 session_start();
 if (!isset($_SESSION['agent'])) { header("Location: index.php"); exit; }
@@ -13,6 +13,17 @@ $error = "";
 $agent_actuel = $_SESSION['agent'];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    // ---> NOUVEAU : Vérification du token CSRF <---
+
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+
+        // Si le token est absent ou incorrect, on bloque l'action
+
+        die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+
+    }
+
     $code = trim($_POST['coderuche']);
     $nom = trim($_POST['nomcomplet']);
     
@@ -66,6 +77,7 @@ include 'include/header.php';
     <?php endif; ?>
 
     <form method="POST">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
         <div class="form-group">
             <label>Code Barre / ID</label>
             <input type="text" name="coderuche" required placeholder="Scanner ou saisir le code">

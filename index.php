@@ -223,21 +223,44 @@ include 'include/header.php';
 </div>
 
 <script>
-function confirmerSuppression(codeRuche) {
-    // Le message d'avertissement détaillé
-    const message = "⚠️ ATTENTION : ACTION ADMINISTRATIVE\n\n" +
-                    "Toute suppression désactive une entrée en base de données.\n" +
-                    "Cette ruche ne sera plus visible, mais restera archivée.\n\n" +
-                    "Souhaitez-vous vraiment désactiver la ruche " + decodeURIComponent(codeRuche) + " ?";
+    //COMMENTER CAR UTILISE GET
+// function confirmerSuppression(codeRuche) {
+//     // Le message d'avertissement détaillé
+//     const message = "⚠️ ATTENTION : ACTION ADMINISTRATIVE\n\n" +
+//                     "Toute suppression désactive une entrée en base de données.\n" +
+//                     "Cette ruche ne sera plus visible, mais restera archivée.\n\n" +
+//                     "Souhaitez-vous vraiment désactiver la ruche " + decodeURIComponent(codeRuche) + " ?";
 
-    if (confirm(message)) {
-        // Si l'utilisateur clique sur OK, on redirige vers la page de suppression
-        window.location.href = "delete_ruches.php?code=" + codeRuche + "&admin=1";
-    } else {
-        // Si l'utilisateur clique sur Annuler
-        alert("Action annulée par l'utilisateur. La ruche n'a pas été modifiée.");
+//     if (confirm(message)) {
+//         // Si l'utilisateur clique sur OK, on redirige vers la page de suppression
+//         window.location.href = "delete_ruches.php?code=" + codeRuche + "&admin=1";
+//     } else {
+//         // Si l'utilisateur clique sur Annuler
+//         alert("Action annulée par l'utilisateur. La ruche n'a pas été modifiée.");
+//     }
+// }
+
+function confirmerSuppression(codeRuche) {
+    if (confirm("Voulez-vous vraiment supprimer la ruche " + codeRuche + " ?")) {
+        
+        // 1. Création d'un formulaire dynamique
+        var form = document.createElement("form");
+        form.method = "POST";
+        form.action = "delete_ruches.php";
+
+        // 2. Ajout du champ caché pour 'code'
+        var inputCode = document.createElement("input");
+        inputCode.type = "hidden";
+        inputCode.name = "code";
+        inputCode.value = codeRuche;
+        form.appendChild(inputCode);
+
+        // 3. Ajout du formulaire à la page et soumission
+        document.body.appendChild(form);
+        form.submit();
     }
 }
+
 </script>
 
 <?php include 'include/footer.php'; ?>

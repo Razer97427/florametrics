@@ -1,8 +1,8 @@
 <?php
 // --- DEBUG ---
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 session_start();
 require '../config.php';
@@ -34,6 +34,17 @@ if (isset($_GET['delete_login'])) {
 
 // --- 2. LOGIQUE D'AJOUT ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
+
+    // ---> NOUVEAU : Vérification du token CSRF <---
+
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+
+        // Si le token est absent ou incorrect, on bloque l'action
+
+        die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+
+    }
+
     $new_login = $_POST['login'];
     $new_nom = $_POST['nomcomplet']; // On utilise le nom de colonne correct
     $new_pass = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -92,6 +103,7 @@ include 'include/header.php';
     <div id="formulaire-ajout" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 2px solid #28a745;">
         <h3 style="margin-top: 0; color: #28a745;">➕ Nouvel utilisateur</h3>
         <form method="POST" action="manage_users.php">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
             <div style="margin-bottom: 15px;">
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Login :</label>
                 <input type="text" name="login" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
