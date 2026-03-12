@@ -16,18 +16,48 @@ if (!isset($_SESSION['agent']) || $_SESSION['role'] !== 'Admin') {
 $message = "";
 $error = "";
 
-// --- 1. LOGIQUE DE SUPPRESSION (Basée sur le login) ---
-if (isset($_GET['delete_login'])) {
-    $login_to_delete = $_GET['delete_login'];
+// // --- 1. LOGIQUE DE SUPPRESSION (Basée sur le login) ---
+// if (isset($_GET['delete_login'])) {
+//     $login_to_delete = $_GET['delete_login'];
     
+//     if ($login_to_delete === $_SESSION['agent']) {
+//         $error = "Sécurité : Vous ne pouvez pas supprimer votre propre compte admin.";
+//     } else {
+//         // $del = $conn->prepare("DELETE FROM florametrics WHERE login = ?");
+//         $del = $conn->prepare("UPDATE florametrics set status = 'N' WHERE login = ?");
+//         $del->bind_param("s", $login_to_delete);
+//         if ($del->execute()) {
+//             $message = "Utilisateur supprimé avec succès.";
+//         }
+//     }
+// }
+
+// --- LOGIQUE DE SUPPRESSION (via POST) ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_login'])) {
+    
+    // 1. On vérifie immédiatement le jeton de sécurité (CSRF)
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+    }
+
+    // 2. Si le jeton est bon, on traite la suppression
+    $login_to_delete = $_POST['delete_login'];
+    
+    // On empêche l'admin de se supprimer lui-même
     if ($login_to_delete === $_SESSION['agent']) {
         $error = "Sécurité : Vous ne pouvez pas supprimer votre propre compte admin.";
     } else {
-        // $del = $conn->prepare("DELETE FROM florametrics WHERE login = ?");
+        // Suppression logique (Soft delete)
         $del = $conn->prepare("UPDATE florametrics set status = 'N' WHERE login = ?");
         $del->bind_param("s", $login_to_delete);
+        
         if ($del->execute()) {
             $message = "Utilisateur supprimé avec succès.";
+        } else {
+            $error = "Erreur lors de la suppression : " . $conn->error; // À masquer en production
         }
     }
 }
@@ -73,6 +103,12 @@ $result = $conn->query("SELECT * FROM florametrics ORDER BY login ASC");
 
 include 'include/header.php';
 ?>
+
+<?php if (isset($_SESSION['error'])): ?>
+<div style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+<strong>Oups !</strong>
+<?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
+<?php endif; ?>
 
 <div class="container">
     <h2 style= "margin-bottom: 5px" >🛠️ Gestion des Utilisateurs</h2>
@@ -193,9 +229,14 @@ include 'include/header.php';
                     <a href="edit_user.php?login=<?= urlencode($row['login']) ?>" style="text-decoration: none; color: #007bff; margin-right: 15px;">Modifier</a>
                     
                     <?php if($row['login'] !== $_SESSION['agent']): ?>
-                        <a href="manage_users.php?delete_login=<?= urlencode($row['login']) ?>" 
+                        <!-- <a href="manage_users.php?delete_login=<?= urlencode($row['login']) ?>" 
                            onclick="return confirm('Voulez-vous vraiment supprimer <?= $row['login'] ?> ?')" 
-                           style="text-decoration: none; color: #dc3545;">Supprimer</a>
+                           style="text-decoration: none; color: #dc3545;">Supprimer</a> -->
+                           <form method="POST" action="manage_users.php" style="display: inline-block;" onsubmit="return confirm('Voulez-vous vraiment désactiver le compte de <?= htmlspecialchars($row['login']) ?> ?')">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']) ?>">
+                            <input type="hidden" name="delete_login" value="<?= htmlspecialchars($row['login']) ?>">
+                            <button type="submit" style="background: none; border: none; padding: 0; margin: 0; color: #dc3545; font: inherit; cursor: pointer; text-decoration: underline;">Supprimer</button>
+                        </form>
                     <?php else: ?>
                         <span style="color: #bbb; font-style: italic;">(Moi)</span>
                     <?php endif; ?>

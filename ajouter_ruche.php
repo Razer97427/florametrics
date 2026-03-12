@@ -20,7 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Si le token est absent ou incorrect, on bloque l'action
 
-        die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
 
     }
 
@@ -68,8 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 include 'include/header.php';
 ?>
 
-<div class="login-box" style="margin-top: 20px;">
-    <a href="index.php" style="text-decoration: none; color: #666; font-size: 0.9rem;">← Retour</a>
+<?php if (isset($_SESSION['error'])): ?>
+    <div style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <strong>Oups !</strong> <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+    </div>
+<?php endif; ?>
+
+<div class="login-box" style="max-width: 100%;">
+        <a href="index.php" style="text-decoration: none; color: #666; font-size: 0.9rem;">← Retour</a>
+
     <h2 style="margin-top: 15px;">Lier une ruche</h2>
     
     <?php if($error): ?>

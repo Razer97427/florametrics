@@ -305,6 +305,23 @@ th {
     border-top: 6px solid var(--primary);
 }
 
+.ruche-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Plus naturel sur mobile */
+    padding: 20px 0;
+}
+
+.ruche-box {
+    background: var(--white);
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 420px;
+    border-top: 6px solid var(--primary);
+}
+
 .login-box h1 {
     text-align: center;
     color: var(--primary);
