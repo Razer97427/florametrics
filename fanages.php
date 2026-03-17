@@ -91,6 +91,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['action_merge']) && !$mode) {
         $merge_ids = $_POST['merge_ids'] ?? [];
         
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+
+        // Si le token est absent ou incorrect, on bloque l'action
+
+        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+
+    }
+
         if (count($merge_ids) >= 2) {
             try {
                 // On cherche la date la plus récente parmi les sessions à fusionner
@@ -159,6 +170,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $marquees = (int)$_POST['f_marquees'];
         $date = $_POST['d_fanage'];
         $rang_form = (int)$_POST['rang'];
+
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+
+        // Si le token est absent ou incorrect, on bloque l'action
+
+        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+
+    }
 
         if ($marquees <= $fannes) {
             
@@ -476,6 +498,7 @@ include 'include/header.php';
                 <?php if(isset($erreur)) echo "<p style='color:red; background: #ffe6e6; padding: 10px; border-radius: 4px;'>$erreur</p>"; ?>
                 
                 <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
                     <input type="hidden" name="action_add" value="1">
                     <input type="hidden" name="id_session" value="<?= ($id_session_actuelle === 'Nouvelle') ? '' : $id_session_actuelle ?>">
                     
