@@ -255,6 +255,13 @@ function confirmerSuppression(codeRuche) {
         inputCode.value = codeRuche;
         form.appendChild(inputCode);
 
+        // 2b. Ajout du champ caché pour le token CSRF
+        var inputToken = document.createElement("input");
+        inputToken.type = "hidden";
+        inputToken.name = "csrf_token";
+        inputToken.value = "<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>";
+        form.appendChild(inputToken);
+
         // 3. Ajout du formulaire à la page et soumission
         document.body.appendChild(form);
         form.submit();
