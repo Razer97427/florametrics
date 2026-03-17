@@ -7,12 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? '';
     $code_retour = $_POST['code_retour'] ?? '';
 
-    if (!empty($id)) {
-        // $stmt = $conn->prepare("DELETE FROM fanages WHERE id_l = ?");
-        // $stmt->bind_param("i", $id);
-        // $stmt->execute();
-
-        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
 
         // Si le token est absent ou incorrect, on bloque l'action
 
@@ -22,6 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
 
     }
+
+    if (!empty($id)) {
+        // $stmt = $conn->prepare("DELETE FROM fanages WHERE id_l = ?");
+        // $stmt->bind_param("i", $id);
+        // $stmt->execute();
 
         $stmt = $conn->prepare("UPDATE ent_fanages set status = 'N' WHERE id_l = ? AND coderuche = ?");
         $stmt->bind_param("is", $id,$code_retour);
