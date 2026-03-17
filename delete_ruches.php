@@ -39,6 +39,18 @@ $isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin');
 // }
 
 if (!empty($code)) {
+
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+
+        // Si le token est absent ou incorrect, on bloque l'action
+
+        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+
+    }
+
     if ($isAdmin) {
         // --- CAS ADMIN : Désactivation GLOBALE ---
         
