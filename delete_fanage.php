@@ -12,6 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // $stmt->bind_param("i", $id);
         // $stmt->execute();
 
+        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+
+        // Si le token est absent ou incorrect, on bloque l'action
+
+        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+
+    }
+
         $stmt = $conn->prepare("UPDATE ent_fanages set status = 'N' WHERE id_l = ? AND coderuche = ?");
         $stmt->bind_param("is", $id,$code_retour);
         $stmt->execute();
