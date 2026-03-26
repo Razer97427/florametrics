@@ -3,6 +3,7 @@ SAUV/
 
 # Ignorer le fichier de configuration spécifique
 config.php
+check_login.php
 
 # Ignorer tous les fichiers commençant par sync_
 sync_*
@@ -13,3 +14,4 @@ Florametrics.apk
 *.txt
 *.ok
 *.back
+*.zip
