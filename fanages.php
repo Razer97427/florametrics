@@ -74,6 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $del_det = $conn->prepare("UPDATE det_fanages SET status = 'N' WHERE id_l = ?");
         $del_det->bind_param("i", $id_to_delete);
         $del_det->execute();
+        // Supprimer les détails
+        $del_det = $conn->prepare("UPDATE det_fanages set STATUS = 'N' WHERE id_l = ?");
 
         $del_ent = $conn->prepare("UPDATE ent_fanages SET status = 'N' WHERE id_l = ?");
         $del_ent->bind_param("i", $id_to_delete);
@@ -449,7 +451,10 @@ include 'include/header.php';
                                 <br>
                                 <small style="color: grey;">Agent : <?= htmlspecialchars($sess['login']) ?> | ID: <?= $sess['id_l'] ?></small>
                             </td>
+                            <!-- ancien format de date -->
                             <td><?= date('d/m/Y à H:i', strtotime($sess['derniere_date'])) ?></td>
+                            <!-- // On crée un objet date en précisant le format exact de ta base -->
+                            <!-- <td><?php $d = DateTime::createFromFormat('d/m/Y H:i:s', $sess['derniere_date']);echo ($d) ? $d->format('d/m/Y à H:i') : htmlspecialchars($sess['derniere_date']);?></td> -->
                             <td style="text-align: center;"><span style="background: #e9ecef; padding: 3px 8px; border-radius: 10px;"><?= $sess['nb_releves'] ?></span></td>
                             <td style="text-align: center;">
                                 <span style="padding: 5px 10px; border-radius: 12px; font-weight: bold; <?= getBadgeStyle($moy_p) ?>">
@@ -582,6 +587,9 @@ include 'include/header.php';
                         <tr>
                             <td><strong>Rang <?= $f['rang'] ?></strong></td>
                             <td><?= date('d/m/Y à H:i', strtotime($f['d_fanage'])) ?></td>
+                            <td><?php $d = DateTime::createFromFormat('d/m/Y H:i:s', $f['d_fanage']);echo ($d) ? $d->format('d/m/Y à H:i') : htmlspecialchars($f['d_fanage']);?></td>
+                            <!-- <td style="color: #666;"> <?= date('d/m/Y H:i', strtotime($f['d_fanage'])) ?></td> -->
+                            <!-- <td style="color: #666;"><?= date('H:i', strtotime($f['d_fanage'])) ?></td> -->
                             <td><?= $f['f_fannees'] ?></td>
                             <td><?= $f['f_marquees'] ?></td>
                             <td>
