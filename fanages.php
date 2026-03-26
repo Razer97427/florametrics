@@ -31,8 +31,10 @@ if ($mode === 'new') {
 
 } elseif ($mode === 'continue') {
     // On cherche l'id_l de l'en-tête le plus récent pour CETTE ruche ET CET AGENT (Collaboratif !)
-    $stmt_last_sess = $conn->prepare("SELECT MAX(id_l) as last_id FROM ent_fanages WHERE coderuche = ? AND login = ? AND status = 'A'");
-    $stmt_last_sess->bind_param("ss", $code, $agent);
+    // $stmt_last_sess = $conn->prepare("SELECT MAX(id_l) as last_id FROM ent_fanages WHERE coderuche = ? AND login = ? AND status = 'A'");
+    // $stmt_last_sess->bind_param("ss", $code, $agent);
+    $stmt_last_sess = $conn->prepare("SELECT MAX(id_l) as last_id FROM ent_fanages WHERE coderuche = ? AND status = 'A'");
+    $stmt_last_sess->bind_param("s", $code);
     $stmt_last_sess->execute();
     $id_session_actuelle = $stmt_last_sess->get_result()->fetch_assoc()['last_id'] ?? null;
     
