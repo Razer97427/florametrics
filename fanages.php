@@ -558,23 +558,27 @@ include 'include/header.php';
                 <?php if(isset($erreur)) echo "<p style='color:red; background: #ffe6e6; padding: 10px; border-radius: 4px;'>$erreur</p>"; ?>
                 
                 <form method="POST">
+
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
                     <input type="hidden" name="action_add" value="1">
                     <input type="hidden" name="id_session" value="<?= ($id_session_actuelle === 'Nouvelle') ? '' : $id_session_actuelle ?>">
                     
                     <div class="form-group" style="margin-bottom: 15px;">
-                        <label style="font-weight: bold; display: block; margin-bottom: 5px;">Rang (Modifiable)</label>
-                        <input type="number" name="rang" value="<?= $prochain_rang ?>" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; background: #f0f8ff;">
-                        <small style="color: grey;">Vous pouvez modifier ce numéro si vous commencez un rang spécifique.</small>
+                        <label style="font-weight: bold; display: block; margin-bottom: 5px;">Rang <?= ($mode === 'continue') ? '(Non Modifiable)' : '(Modifiable)' ?></label>
+                        <input type="number" name="rang" <?= ($mode === 'continue') ? 'readonly' : '' ?> value="<?= $prochain_rang ?>" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; background: #f0f8ff;">
+                        <small style="color: #8d1111;"><?= ($mode === 'continue') ? 'Vous ne pouvez pas modifier le numéro de rang car vous continuer un fanage' : 'Vous pouvez modifier le numéro de rang si vous commencez à partir d\'un rang specifique' ?></small>
                     </div>
+
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label style="font-weight: bold; display: block; margin-bottom: 5px;">Date / Heure</label>
                         <input type="datetime-local" name="d_fanage" value="<?= date('Y-m-d\TH:i') ?>" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     </div>
+
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label style="font-weight: bold; display: block; margin-bottom: 5px;">Fleurs Fanées</label>
                         <input type="number" name="f_fannes" min="0" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                     </div>
+
                     <div class="form-group" style="margin-bottom: 20px;">
                         <label style="font-weight: bold; display: block; margin-bottom: 5px;">Fleurs Marquées</label>
                         <input type="number" name="f_marquees" min="0" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
@@ -583,6 +587,7 @@ include 'include/header.php';
                     <button type="submit" class="btn btn-success" style="width:100%; padding: 12px; font-size: 1.1em; font-weight: bold;">
                         ✅ Enregistrer ce relevé
                     </button>
+
                 </form>
             </aside>
         <?php endif; ?>
