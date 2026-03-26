@@ -169,7 +169,7 @@ include 'include/header.php';
                             <strong style="color: #dc3545; background: #fdecea; padding: 4px 8px; border-radius: 4px;">Désactivé</strong>
                             <?php endif; ?>
                             </td>
-                            <td><?= $r['nomcomplet'] ?></td>
+                            <td><?= htmlspecialchars($r['nomcomplet'] ?? '') ?></td>
                             <td>
                                 <?php 
                                 if (!empty($r['info_agents'])) {
@@ -185,7 +185,7 @@ include 'include/header.php';
                                         echo "<span class='agent-pill $class'>";
                                         echo "<span class='dot $dot'></span>";
                                         echo htmlspecialchars($name) . " ($label)";
-                                        echo "</span>";
+                                        echo "</span> ";
                                     }
                                 } else {
                                     echo "<i style='color:gray;'>Aucun agent lié</i>";
