@@ -60,21 +60,16 @@ if ($mode === 'new') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
+    // Centralisation de la vérification CSRF
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide.";
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
+    }
+
     // 2a. Suppression d'une session complète (Action indépendante)
     if (isset($_POST['action_delete']) && $isAdmin) {
         $id_to_delete = (int)$_POST['action_delete'];
-        
-        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-
-        // Si le token est absent ou incorrect, on bloque l'action
-
-        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
-        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit();
-
-    }
-        
         // Supprimer les détails
         $del_det = $conn->prepare("UPDATE det_fanages set STATUS = 'N' WHERE id_l = ?");
         $del_det->bind_param("i", $id_to_delete);

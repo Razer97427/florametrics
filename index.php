@@ -12,7 +12,7 @@ $isAdmin = (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin');
 
 if ($isAdmin) {
     $sql = "SELECT r.*, 
-            GROUP_CONCAT(CONCAT(ar.n_agent, '|', ar.status) SEPARATOR ', ') as info_agents
+            GROUP_CONCAT(CONCAT(ar.n_agent, '@@', ar.status) SEPARATOR ';;') as info_agents
             FROM ruches r
             LEFT JOIN agent_ruches ar ON r.coderuche = ar.coderuche
             GROUP BY r.coderuche
@@ -173,9 +173,9 @@ include 'include/header.php';
                             <td>
                                 <?php 
                                 if (!empty($r['info_agents'])) {
-                                    $pairs = explode(', ', $r['info_agents']);
+                                    $pairs = explode(';;', $r['info_agents']);
                                     foreach ($pairs as $p) {
-                                        $data = explode('|', $p);
+                                        $data = explode('@@', $p);
                                         $name = $data[0];
                                         $status = $data[1] ?? 'N';
                                         $class = ($status === 'A') ? 'status-active' : 'status-inactive';
@@ -197,7 +197,7 @@ include 'include/header.php';
                                     <a href="fanages.php?code=<?= urlencode($r['coderuche']) ?>" class="btn-sm btn-view">Voir les fanages 👁️</a>
                                     <!-- <a href="edit_ruche.php?code=<?= urlencode($r['coderuche']) ?>" class="btn-sm btn-edit">✏️</a> -->
                                     <!-- <a href="delete_ruches.php?code=<?= urlencode($r['coderuche']) ?>&admin=1" class="btn-sm btn-del" onclick="return confirm('Voulez vous vraiment supprimer la ruche pour tout le monde ?')">Supprimer la ruche 🗑️</a> -->
-                                    <a href="javascript:void(0);" class="btn-sm btn-del" onclick="confirmerSuppression('<?= urlencode($r['coderuche']) ?>')">Supprimer la ruche 🗑️</a>
+                                    <a href="javascript:void(0);" class="btn-sm btn-del" onclick="confirmerSuppression(<?= htmlspecialchars(json_encode($r['coderuche'])) ?>)">Supprimer la ruche 🗑️</a>
                                 </div>
                             </td>
                         </tr>
