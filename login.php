@@ -62,7 +62,7 @@ include 'include/header.php';
         <form method="POST">
             <div class="form-group" style="margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Identifiant</label>
-                <input type="text" autocomplete="username" id="login" name="login" value="<?= $_POST['login'] ?>" required autofocus style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
+                <input type="text" autocomplete="username" id="login" name="login" value="<?= htmlspecialchars($_POST['login'] ?? '') ?>" required autofocus style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 5px; box-sizing: border-box;">
             </div>
             <div class="form-group" style="margin-bottom: 25px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 500;">Mot de passe</label>

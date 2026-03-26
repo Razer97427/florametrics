@@ -566,7 +566,7 @@ include 'include/header.php';
                     <div class="form-group" style="margin-bottom: 15px;">
                         <label style="font-weight: bold; display: block; margin-bottom: 5px;">Rang <?= ($mode === 'continue') ? '(Non Modifiable)' : '(Modifiable)' ?></label>
                         <input type="number" name="rang" <?= ($mode === 'continue') ? 'readonly' : '' ?> value="<?= $prochain_rang ?>" required style="width:100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; background: #f0f8ff;">
-                        <small style="color: #8d1111;"><?= ($mode === 'continue') ? 'Vous ne pouvez pas modifier le numéro de rang car vous continuer un fanage' : 'Vous pouvez modifier le numéro de rang si vous commencez à partir d\'un rang specifique' ?></small>
+                        <small style="color: #8d1111;"><?= ($mode === 'continue') ? 'Vous ne pouvez pas modifier le numéro de rang car vous continuez un fanage.' : 'Vous pouvez modifier le numéro de rang si vous commencez à partir d\'un rang spécifique.' ?></small>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 15px;">
