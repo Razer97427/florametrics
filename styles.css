@@ -408,6 +408,77 @@ th {
 .status-active { background: var(--success-bg); color: var(--primary); border: 1px solid #c3e6cb; }
 .status-inactive { background: var(--danger-bg); color: var(--danger); border: 1px solid #f5c6cb; }
 
+
+/* =========================================
+   5.1 BOUTONS D'EXPORTS
+   ========================================= */
+.export-filter-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px; /* Aligné sur tes autres cartes */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+.date-filter-form {
+    display: flex;
+    align-items: flex-end; /* Aligne le bouton en bas avec les champs */
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.input-group-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.input-group-custom label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-left: 2px;
+}
+
+.input-group-custom label i {
+    color: #2e7d32; /* Le vert de ton logo */
+    margin-right: 5px;
+}
+
+/* Style spécifique pour tes inputs date */
+.date-filter-form .form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    height: 42px; /* Hauteur standard pour s'aligner au bouton */
+}
+
+/* Ajustement pour ton bouton danger */
+.btn-export-action {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 20px;
+    font-weight: 600;
+    border-radius: 8px !important; /* Pour garder l'arrondi de ton image */
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .date-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .btn-export-action {
+        width: 100%;
+        justify-content: center;
+    }
+}
+/* FIN BTN EXPORT */
+
 /* =========================================
    6. FOOTER (BANDEAU VERT)
    ========================================= */

@@ -370,8 +370,60 @@ include 'include/header.php';
                 </div>
             <?php endif; ?>
 
-            <h3 style="text-align: left; color: #333; margin-bottom: 20px;">📚 Historique des Sessions Précédentes</h3>
+            <!-- <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
+                <form action="export.php" method="GET" target="_blank" style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                    <input type="hidden" name="code" value="<?= htmlspecialchars($code) ?>">
+        
+            <div>
+                <label for="date_debut" style="font-weight: bold;">Du :</label>
+                <input type="date" name="date_debut" id="date_debut" class="form-control" required>
+            </div>
+        
+            <div>
+                <label for="date_fin" style="font-weight: bold;">Au :</label>
+                    <input type="date" name="date_fin" id="date_fin" class="form-control" required>
+            </div>
+        
+            <button type="submit" class="btn btn-danger" style="margin-top: 22px; background-color: #d32f2f;">
+                <i class="fas fa-calendar-alt"></i> Exporter cette période (PDF)
+            </button>
+                </form>
+            </div> -->
+            <table class="admin-table">
+            <thead>
+            <th>Export par intervalle de dates</th>
+            </thead>
+            </table>
+            
+            <div class="export-filter-card">
+                <form action="export.php" method="GET" target="_blank" class="date-filter-form">
+                    <input type="hidden" name="code" value="<?= htmlspecialchars($code) ?>">
+        
+            <div class="input-group-custom">
+                    <label><i class="fas fa-calendar-day"></i> Du</label>
+                    <input type="date" name="date_debut" class="modern-input" required>
+            </div>
+        
+            <div class="input-group-custom">
+                    <label><i class="fas fa-calendar-check"></i> Au</label>
+                    <input type="date" name="date_fin" class="modern-input" required>
+            </div>
+        
+                <button type="submit" class="btn btn-danger">
+                <i class="fas fa-file-pdf"></i>
+                <span>Générer le Rapport</span>
+                </button>
+                </form>
 
+            </div>
+
+
+            <h3 style="text-align: left; color: #333; margin-bottom: 20px;">📚 Historique des Sessions Précédentes</h3>
+            <!-- <div style="margin-bottom: 20px;">
+                <a href="export.php?code=<?php echo $code; ?>" target="_blank" class="btn btn-danger" style="background-color: #d32f2f; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                📄 Télécharger Rapport PDF Global de cette sessions
+                </a>
+            </div> -->
             <main class="table-wrapper">
                 <form method="POST" action="">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
@@ -451,6 +503,9 @@ include 'include/header.php';
                         <button type="submit" name="action_merge" value="1" class="btn btn-primary" style="font-weight: bold; border: none; padding: 10px 20px;">
                             🔗 Fusionner les sessions sélectionnées
                         </button>
+                        <!-- <button type="submit" formaction="export.php" name="action_export" class="btn btn-success" style="margin-left:10px;">
+                            📥 Exporter la sélection
+                        </button> -->
                     </div>
                     <?php endif; ?>
                 </form>
@@ -532,6 +587,7 @@ include 'include/header.php';
 
         <main style="flex: 2; min-width: 400px;" class="table-wrapper">
             <h3 style="margin-top: 0; color: #333;">Relevés de cette session</h3>
+            <div style="text-align: right; margin-bottom: 15px;">
             <table class="admin-table">
                 <thead>
                     <tr>
