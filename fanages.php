@@ -70,34 +70,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // 2a. Suppression d'une session complète (Action indépendante)
     if (isset($_POST['action_delete']) && $isAdmin) {
         $id_to_delete = (int)$_POST['action_delete'];
+        
         // Supprimer les détails
         $del_det = $conn->prepare("UPDATE det_fanages set STATUS = 'N' WHERE id_l = ?");
-        $del_det->bind_param("i", $id_to_delete);
-        $del_det->execute();
 
-        // Supprimer l'en-tête
-        $del_ent = $conn->prepare("UPDATE ent_fanages set STATUS = 'N' WHERE id_l = ?");
-        $del_ent->bind_param("i", $id_to_delete);
-        $del_ent->execute();
-
-        header("Location: fanages.php?code=$code");
-        exit;
-    }
-
-    // 2b. Fusion des sessions sélectionnées
+    // 2b. Fusion des sessions sélectionnées (Action indépendante)
     if (isset($_POST['action_merge']) && !$mode) {
         $merge_ids = $_POST['merge_ids'] ?? [];
-        
-        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-
-        // Si le token est absent ou incorrect, on bloque l'action
-
-        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
-        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit();
-
-    }
 
         if (count($merge_ids) >= 2) {
             try {
@@ -167,17 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $marquees = (int)$_POST['f_marquees'];
         $date = $_POST['d_fanage'];
         $rang_form = (int)$_POST['rang'];
-
-        if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-
-        // Si le token est absent ou incorrect, on bloque l'action
-
-        // die("Erreur de sécurité : Jeton CSRF invalide. Veuillez rafraîchir la page.");
-        $_SESSION['error'] = "Votre session a expiré ou le formulaire est invalide. Veuillez réessayer.";
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
-        exit();
-
-    }
 
         if ($marquees <= $fannes) {
             
